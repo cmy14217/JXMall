@@ -8,7 +8,7 @@ import java.util.List;
 @Entity
 public class Orders {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Float totalPrice;
     private String status;
@@ -25,7 +25,7 @@ public class Orders {
     private LogisticsRecord logisticsRecord;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "userId",insertable = false,updatable = false)
     private User user;
 
     public Orders() {
