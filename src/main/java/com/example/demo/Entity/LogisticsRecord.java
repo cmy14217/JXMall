@@ -6,7 +6,7 @@ import java.util.Date;
 @Entity
 public class LogisticsRecord {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String logisticsStatus;
     private Date outboundTime;
@@ -15,7 +15,7 @@ public class LogisticsRecord {
     private Integer orderId;
 
     @OneToOne
-    @JoinColumn(name = "orderId")
+    @JoinColumn(name = "orderId",insertable = false,updatable = false)
     private Orders order;
 
     public LogisticsRecord() {
