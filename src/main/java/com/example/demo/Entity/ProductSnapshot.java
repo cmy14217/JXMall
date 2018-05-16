@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 public class ProductSnapshot {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String productName;
     private String productDescription;
@@ -14,7 +14,7 @@ public class ProductSnapshot {
     private Integer orderId;
 
     @ManyToOne
-    @JoinColumn(name = "orderId")
+    @JoinColumn(name = "orderId",insertable = false,updatable = false)
     private Orders order;
 
     public ProductSnapshot() {
