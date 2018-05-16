@@ -11,7 +11,7 @@ public class Inventory {
     private Integer lockedCount;
 
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id",insertable = false,updatable = false)
     private Product product;
 
     public Inventory() {
