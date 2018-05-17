@@ -26,7 +26,7 @@ public class Orders {
 
     @ManyToOne
     @JoinColumn(name = "userId",insertable = false,updatable = false)
-    private User user;
+    private Users user;
 
     public Orders() {
     }
@@ -34,6 +34,11 @@ public class Orders {
     public Orders(Float totalPrice, Integer userId) {
         this.totalPrice = totalPrice;
         this.userId = userId;
+        this.status = "unpaid";
+        this.createTime = new Date();
+        this.finishTime = null;
+        this.paidTime = null;
+        this.withdrawnTime = null;
     }
 
     public Integer getId() {
