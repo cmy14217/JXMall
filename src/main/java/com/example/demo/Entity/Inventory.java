@@ -5,9 +5,8 @@ import javax.persistence.*;
 @Entity
 public class Inventory {
     @Id
-    @GeneratedValue
     private Integer id;
-    private Integer count;
+    private Integer inventoryCount;
     private Integer lockedCount;
 
     @OneToOne
@@ -15,6 +14,13 @@ public class Inventory {
     private Product product;
 
     public Inventory() {
+
+    }
+
+    public Inventory(Integer id) {
+        this.id = id;
+        this.inventoryCount = 0;
+        this.lockedCount = 0;
     }
 
     public Integer getId() {
@@ -25,12 +31,12 @@ public class Inventory {
         this.id = id;
     }
 
-    public Integer getCount() {
-        return count;
+    public Integer getInventoryCount() {
+        return inventoryCount;
     }
 
-    public void setCount(Integer count) {
-        this.count = count;
+    public void setInventoryCount(Integer inventoryCount) {
+        this.inventoryCount = inventoryCount;
     }
 
     public Integer getLockedCount() {
@@ -40,4 +46,5 @@ public class Inventory {
     public void setLockedCount(Integer lockedCount) {
         this.lockedCount = lockedCount;
     }
+
 }
