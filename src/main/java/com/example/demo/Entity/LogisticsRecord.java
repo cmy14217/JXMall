@@ -23,6 +23,10 @@ public class LogisticsRecord {
 
     public LogisticsRecord(Integer orderId) {
         this.orderId = orderId;
+        this.logisticsStatus = "readyToShip";
+        this.outboundTime = new Date();
+        this.deliveryTime = null;
+        this.signedTime = null;
     }
 
     public Integer getId() {
