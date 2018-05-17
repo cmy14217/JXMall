@@ -5,20 +5,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class User {
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String name;
+    private String userName;
 
     @OneToMany(mappedBy = "user")
     private List<Orders> orders = new ArrayList<>();
 
-    public User() {
+    public Users() {
     }
 
-    public User(String name) {
-        this.name = name;
+    public Users(String userName) {
+        this.userName = userName;
     }
 
     public Integer getId() {
@@ -29,12 +29,12 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public List<Orders> getOrders() {
