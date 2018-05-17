@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +17,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
 
     //update product
     @Modifying
-    @Query(value = "update Product set name=?1,description=?2,price=?3 where id=?4")
+    @Transactional
+    @Query(value = "update Product set name=?1,description=?2,price=?3 where id=?4",nativeQuery = true)
     void updateProduct(String name,String description,Float price,Integer id);
 
     //find product by id
