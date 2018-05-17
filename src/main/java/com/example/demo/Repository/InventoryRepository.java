@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 public interface InventoryRepository extends JpaRepository<Inventory, Integer> {
@@ -16,11 +17,13 @@ public interface InventoryRepository extends JpaRepository<Inventory, Integer> {
 
     //alter the num of count
     @Modifying
-    @Query(value = "update Inventory set count=?1 where id=?2")
+    @Transactional
+    @Query(value = "update Inventory set inventoryCount = ?1 where id=?2",nativeQuery = true)
     void updateCount(Integer count,Integer id);
 
     //alter the lockedCount
     @Modifying
-    @Query(value = "update Inventory set lockedCount=?1 where id=?2")
+    @Transactional
+    @Query(value = "update Inventory set lockedCount=?1 where id=?2",nativeQuery = true)
     void updateLockedCount(Integer lockedCount,Integer id);
 }
