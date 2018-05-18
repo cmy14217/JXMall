@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -33,24 +34,23 @@ public class OrderController {
     private LogisticsRecordRepository logisticsRecordRepository;
 
     @PostMapping
-    public ResponseEntity<Orders> createOrder(@RequestBody JsonNode node){
-        Integer productId = node.get("productId").asInt();
-        Integer purchaseCount = node.get("purchaseCount").asInt();
+    public ResponseEntity<Orders> createOrder(@RequestBody List<JsonNode> nodes, HttpServletResponse response){
+        Orders order = orderRepository.saveAndFlush(new Orders(Float.valueOf(0), 1));
+        Float totalPrice = Float.valueOf(0);
+        for (JsonNode node : nodes) {
+            Integer productId = node.get("productId").asInt();
+            Integer purchaseCount = node.get("purchaseCount").asInt();
 
-        Product product = productRepository.findById(productId).get();
-        Orders order = null;
+            Product product = productRepository.findById(productId).get();
+            Inventory inventory = inventoryRepository.findById(productId).get();
 
-        //此处应添加判断，库存中的数量是否能满足购买需求！！
-        Inventory inventory = inventoryRepository.findById(productId).get();
-        if (inventory.getInventoryCount() - inventory.getLockedCount() >= purchaseCount) {
-            order = new Orders(product.getPrice() * purchaseCount, 1);
-            orderRepository.saveAndFlush(order);
+            totalPrice += purchaseCount * product.getPrice();
             snapshotRepository.saveAndFlush(new ProductSnapshot(product.getName(), product.getDescription(), product.getPrice(), purchaseCount, order.getId()));
             inventoryRepository.updateLockedCount(inventory.getLockedCount() + purchaseCount, productId);
-            logisticsRecordRepository.saveAndFlush(new LogisticsRecord(order.getId()));
-        }else{
-            //
+            //logisticsRecordRepository.saveAndFlush(new LogisticsRecord(order.getId()));
         }
+        orderRepository.updateTotalPrice(totalPrice,order.getId());
+        response.setHeader("location","http://IP:8083/orders/"+order.getId());
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
 
@@ -59,7 +59,7 @@ public class OrderController {
     public void updateStatus(@RequestParam("orderStatus")String status,@PathVariable Integer id){
         if(status.equals("paid") || status.equals("withdrwan")) {
             orderRepository.updateOrderStatus(status,id);
-            List<ProductSnapshot> snapshots = orderRepository.findById(id).get().getProducts();
+            List<ProductSnapshot> snapshots = orderRepository.findById(id).get().getPurchaseItemList();
             for (ProductSnapshot snapshot : snapshots) {
                 inventoryRepository.updateLockedCount(inventoryRepository.findById(snapshot.getId()).get()
                         .getLockedCount() - snapshot.getPurchaseCount(), snapshot.getId());
