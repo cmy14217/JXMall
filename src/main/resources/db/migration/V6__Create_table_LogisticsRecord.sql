@@ -4,6 +4,7 @@ CREATE TABLE LogisticsRecord(
     outboundTime DATE DEFAULT NULL,
     signedTime DATE DEFAULT NULL,
     deliveryTime DATE DEFAULT NULL,
+    deliveryMan VARCHAR(30) DEFAULT NULL,
     orderId INT UNIQUE,
     FOREIGN KEY(orderId) REFERENCES Orders(id)
 );
