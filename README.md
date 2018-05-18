@@ -1,3 +1,4 @@
+![需求分析](https://github.com/cmy14217/JXMall/blob/master/ER.png)
 # 京西商城
 
 ## 练习要求
