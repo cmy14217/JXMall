@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,10 +26,11 @@ public class ProductController {
     private InventoryRepository inventoryRepository;
 
     @PostMapping
-    public ResponseEntity<Product> addNewProduct(@RequestBody Product product){
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addNewProduct(@RequestBody Product product,HttpServletResponse response){
         Product addProduct = productRepository.saveAndFlush(product);
         inventoryRepository.saveAndFlush(new Inventory(addProduct.getId()));
-        return new ResponseEntity<>(addProduct,HttpStatus.CREATED);
+        response.setHeader("location","http://IP:8083/products/"+addProduct.getId().toString());
     }
 
     @PutMapping(value = "/{id}")
