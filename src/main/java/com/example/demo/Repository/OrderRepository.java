@@ -43,4 +43,9 @@ public interface OrderRepository extends JpaRepository<Orders,Integer> {
     @Transactional
     @Query(value = "update Orders set finishTime=?1 where id=?2")
     void updateFinishTime(Date date,Integer id);
+
+    @Modifying
+    @Transactional
+    @Query(value = "update Orders set totalPrice=?1 where id=?2")
+    void updateTotalPrice(Float price,Integer id);
 }
