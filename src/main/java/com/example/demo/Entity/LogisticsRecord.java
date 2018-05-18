@@ -12,6 +12,7 @@ public class LogisticsRecord {
     private Date outboundTime;
     private Date signedTime;
     private Date deliveryTime;
+    private String deliveryMan;
     private Integer orderId;
 
     @OneToOne
@@ -27,6 +28,7 @@ public class LogisticsRecord {
         this.outboundTime = new Date();
         this.deliveryTime = null;
         this.signedTime = null;
+        this.deliveryMan = null;
     }
 
     public Integer getId() {
@@ -75,5 +77,13 @@ public class LogisticsRecord {
 
     public void setOrderId(Integer orderId) {
         this.orderId = orderId;
+    }
+
+    public String getDeliveryMan() {
+        return deliveryMan;
+    }
+
+    public void setDeliveryMan(String deliveryMan) {
+        this.deliveryMan = deliveryMan;
     }
 }
