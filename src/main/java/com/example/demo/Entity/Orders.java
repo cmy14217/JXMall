@@ -19,7 +19,7 @@ public class Orders {
     private Integer userId;
 
     @OneToMany(mappedBy = "order")
-    private List<ProductSnapshot> products = new ArrayList<>();
+    private List<ProductSnapshot> purchaseItemList = new ArrayList<>();
 
     @OneToOne(mappedBy = "order")
     private LogisticsRecord logisticsRecord;
@@ -105,11 +105,11 @@ public class Orders {
         this.userId = userId;
     }
 
-    public List<ProductSnapshot> getProducts() {
-        return products;
+    public List<ProductSnapshot> getPurchaseItemList() {
+        return purchaseItemList;
     }
 
-    public void setProducts(List<ProductSnapshot> products) {
-        this.products = products;
+    public void setPurchaseItemList(List<ProductSnapshot> purchaseItemList) {
+        this.purchaseItemList = purchaseItemList;
     }
 }
